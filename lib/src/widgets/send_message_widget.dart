@@ -282,14 +282,6 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     }
   }
 
-  void _onImageSelected(String imagePath, String error) {
-    debugPrint('Call in Send Message Widget');
-    if (imagePath.isNotEmpty) {
-      widget.onSendTap.call(imagePath, replyMessage, MessageType.image);
-      _assignRepliedMessage();
-    }
-  }
-
   void _assignRepliedMessage() {
     if (replyMessage.message.isNotEmpty) {
       _replyMessage.value = const ReplyMessage();
@@ -306,6 +298,13 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
       replyMessage,
       MessageType.text,
     );
+    _assignRepliedMessage();
+  }
+
+  void _onImageSelected(String imagePath, String error) {
+    if (imagePath.isEmpty) return;
+
+    widget.onSendTap.call(imagePath, replyMessage, MessageType.image);
     _assignRepliedMessage();
   }
 

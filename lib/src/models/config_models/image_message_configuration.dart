@@ -32,6 +32,7 @@ class ImageMessageConfiguration {
     this.padding,
     this.margin,
     this.borderRadius,
+    this.timeTextStyle,
   });
 
   /// Provides configuration of share button while image message is appeared.
@@ -57,6 +58,9 @@ class ImageMessageConfiguration {
 
   /// Used for giving border radius of image message.
   final BorderRadius? borderRadius;
+
+  /// Used for giving text style of time text in image message.
+  final TextStyle? timeTextStyle;
 }
 
 class ShareIconConfiguration {

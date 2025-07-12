@@ -88,7 +88,13 @@ class ImageMessageView extends StatelessWidget {
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: Container(
-                  padding: imageMessageConfig?.padding ?? EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: imageMessageConfig?.borderRadius ??
+                        BorderRadius.circular(14),
+                  ),
+                  padding: imageMessageConfig?.padding ??
+                      const EdgeInsetsGeometry.all(3),
                   margin: imageMessageConfig?.margin ??
                       EdgeInsets.only(
                         top: 6,
@@ -96,42 +102,19 @@ class ImageMessageView extends StatelessWidget {
                         left: isMessageBySender ? 0 : 6,
                         bottom: message.reaction.reactions.isNotEmpty ? 15 : 0,
                       ),
-                  height: imageMessageConfig?.height ?? 200,
-                  width: imageMessageConfig?.width ?? 150,
-                  child: ClipRRect(
-                    borderRadius: imageMessageConfig?.borderRadius ??
-                        BorderRadius.circular(14),
-                    child: (() {
-                      if (imageUrl.isUrl) {
-                        return Image.network(
-                          imageUrl,
-                          fit: BoxFit.fitHeight,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                        );
-                      } else if (imageUrl.fromMemory) {
-                        return Image.memory(
-                          base64Decode(imageUrl
-                              .substring(imageUrl.indexOf('base64') + 7)),
-                          fit: BoxFit.fill,
-                        );
-                      } else {
-                        return Image.file(
-                          File(imageUrl),
-                          fit: BoxFit.fill,
-                        );
-                      }
-                    }()),
+                  height: imageMessageConfig?.height ?? 280,
+                  width: imageMessageConfig?.width ?? 200,
+                  child: Column(
+                    children: [
+                      Expanded(child: buildImage()),
+                      const SizedBox(height: 5),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                              padding: const EdgeInsetsGeometry.only(right: 5),
+                              child: buildTimeAndStatus(context))),
+                      const SizedBox(height: 5),
+                    ],
                   ),
                 ),
               ),
@@ -147,6 +130,79 @@ class ImageMessageView extends StatelessWidget {
         if (!isMessageBySender && !(imageMessageConfig?.hideShareIcon ?? false))
           iconButton,
       ],
+    );
+  }
+
+  Widget buildTimeAndStatus(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        spacing: 5,
+        children: [
+          buildTimeText(context),
+          ValueListenableBuilder(
+            valueListenable: message.statusNotifier,
+            builder: (context, status, _) => _getTickIcon(status),
+          ),
+        ],
+      );
+
+  Widget buildTimeText(BuildContext context) => Text(
+        TimeOfDay.fromDateTime(
+          message.updateAt ?? message.createdAt,
+        ).format(context),
+        style: imageMessageConfig?.timeTextStyle ??
+            const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+            ),
+      );
+
+  Icon _getTickIcon(MessageStatus status) {
+    switch (status) {
+      case MessageStatus.read:
+        return Icon(Icons.done_all, size: 16, color: Colors.blue.shade700);
+      case MessageStatus.delivered:
+        return const Icon(Icons.done_all, size: 16, color: Colors.white);
+      case MessageStatus.pending:
+        return const Icon(Icons.access_time, size: 16, color: Colors.orange);
+      case MessageStatus.undelivered:
+        return const Icon(Icons.error_outline, size: 16, color: Colors.red);
+    }
+  }
+
+  ClipRRect buildImage() {
+    return ClipRRect(
+      borderRadius:
+          imageMessageConfig?.borderRadius ?? BorderRadius.circular(14),
+      child: (() {
+        if (imageUrl.isUrl) {
+          return Image.network(
+            imageUrl,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+          );
+        } else if (imageUrl.fromMemory) {
+          return Image.memory(
+            base64Decode(imageUrl.substring(imageUrl.indexOf('base64') + 7)),
+            fit: BoxFit.cover,
+          );
+        } else {
+          return Image.file(
+            File(imageUrl),
+            fit: BoxFit.cover,
+          );
+        }
+      }()),
     );
   }
 }

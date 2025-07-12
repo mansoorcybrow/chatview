@@ -153,8 +153,8 @@ class ImageMessageView extends StatelessWidget {
           message.updateAt ?? message.createdAt,
         ).format(context),
         style: imageMessageConfig?.timeTextStyle ??
-            const TextStyle(
-              color: Colors.white,
+            TextStyle(
+              color: isMessageBySender ? Colors.white : Colors.black,
               fontSize: 12,
             ),
       );

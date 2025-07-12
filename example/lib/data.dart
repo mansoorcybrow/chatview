@@ -108,8 +108,9 @@ class Data {
     ),
     Message(
       id: '12',
-      message: "🤩🤩",
+      message: "https://miro.medium.com/max/1000/0*s7of7kWnf9fDg4XM.jpeg",
       createdAt: DateTime.now(),
+      messageType: MessageType.image,
       sentBy: '2',
       status: MessageStatus.read,
     ),

@@ -113,7 +113,13 @@ class ImageMessageView extends StatelessWidget {
                   width: imageMessageConfig?.width ?? 200,
                   child: Column(
                     children: [
-                      Expanded(child: buildImage()),
+                      Expanded(
+                          child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minHeight: imageMessageConfig?.height ?? 280,
+                                minWidth: imageMessageConfig?.width ?? 200,
+                              ),
+                              child: buildImage())),
                       const SizedBox(height: 5),
                       Align(
                           alignment: Alignment.centerRight,

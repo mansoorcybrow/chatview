@@ -105,8 +105,8 @@ class ImageMessageView extends StatelessWidget {
                   margin: imageMessageConfig?.margin ??
                       EdgeInsets.only(
                         // top: 6,
-                        right: isMessageBySender ? 6 : 0,
-                        left: isMessageBySender ? 0 : 6,
+                        // right: isMessageBySender ? 6 : 0,
+                        // left: isMessageBySender ? 0 : 6,
                         bottom: message.reaction.reactions.isNotEmpty ? 15 : 0,
                       ),
                   height: imageMessageConfig?.height ?? 280,

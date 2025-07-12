@@ -30,6 +30,7 @@ class ChatBackgroundConfiguration {
     this.defaultGroupSeparatorConfig,
     this.backgroundColor,
     this.backgroundImage,
+    this.backgroundImagePackage,
     this.height,
     this.width,
     this.groupSeparatorBuilder,
@@ -42,7 +43,6 @@ class ChatBackgroundConfiguration {
     this.loadingWidget,
     this.messageTimeAnimationCurve = Curves.decelerate,
     this.messageSorter,
-    this.backgroundImagePackage,
   });
 
   /// Provides background color of chat view.

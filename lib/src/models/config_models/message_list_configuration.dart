@@ -42,6 +42,7 @@ class ChatBackgroundConfiguration {
     this.loadingWidget,
     this.messageTimeAnimationCurve = Curves.decelerate,
     this.messageSorter,
+    this.backgroundImagePackage,
   });
 
   /// Provides background color of chat view.
@@ -49,6 +50,8 @@ class ChatBackgroundConfiguration {
 
   /// Provides background image of chat view.
   final String? backgroundImage;
+
+  final String? backgroundImagePackage;
 
   /// Provides padding of chat view.
   final EdgeInsetsGeometry? padding;

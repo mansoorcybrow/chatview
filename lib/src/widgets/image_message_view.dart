@@ -94,8 +94,14 @@ class ImageMessageView extends StatelessWidget {
                         : Colors.white,
                     borderRadius: imageMessageConfig?.borderRadius ??
                         BorderRadius.circular(14),
+                    border: Border.all(
+                      color: isMessageBySender
+                          ? Theme.of(context).primaryColor
+                          : Colors.white,
+                      width: 3,
+                    ),
                   ),
-                  padding: const EdgeInsetsGeometry.all(3),
+                  // padding: const EdgeInsetsGeometry.all(3),
                   margin: imageMessageConfig?.margin ??
                       EdgeInsets.only(
                         top: 6,
@@ -154,7 +160,7 @@ class ImageMessageView extends StatelessWidget {
         ).format(context),
         style: imageMessageConfig?.timeTextStyle ??
             TextStyle(
-              color: isMessageBySender ? Colors.white : Colors.black,
+              color: isMessageBySender ? Colors.white70 : Colors.black54,
               fontSize: 12,
             ),
       );

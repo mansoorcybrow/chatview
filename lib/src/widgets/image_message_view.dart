@@ -89,12 +89,13 @@ class ImageMessageView extends StatelessWidget {
                     : Alignment.centerLeft,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: isMessageBySender
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
                     borderRadius: imageMessageConfig?.borderRadius ??
                         BorderRadius.circular(14),
                   ),
-                  padding: imageMessageConfig?.padding ??
-                      const EdgeInsetsGeometry.all(3),
+                  padding: const EdgeInsetsGeometry.all(3),
                   margin: imageMessageConfig?.margin ??
                       EdgeInsets.only(
                         top: 6,
@@ -139,10 +140,11 @@ class ImageMessageView extends StatelessWidget {
         spacing: 5,
         children: [
           buildTimeText(context),
-          ValueListenableBuilder(
-            valueListenable: message.statusNotifier,
-            builder: (context, status, _) => _getTickIcon(status),
-          ),
+          if (isMessageBySender)
+            ValueListenableBuilder(
+              valueListenable: message.statusNotifier,
+              builder: (context, status, _) => _getTickIcon(status),
+            ),
         ],
       );
 
